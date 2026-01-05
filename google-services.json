@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "643361731554",
+    "project_id": "agrolink-fe2b6",
+    "storage_bucket": "agrolink-fe2b6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643361731554:android:f0885c3de3af7d4b557fbb",
+        "android_client_info": {
+          "package_name": "com.agrolink.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtAekowhLgHH2tnocHtGgdczLgWqnM8Tw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
