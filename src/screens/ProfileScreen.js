@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   Image
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { getUserEquipment, deleteEquipment } from '../database/firebaseDb';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -71,51 +72,62 @@ export default function ProfileScreen({ user, onLogout, navigation }) {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Mano profilis</Text>
-        <TouchableOpacity style={styles.logoutButton} onPress={onLogout}>
-          <Text style={styles.logoutButtonText}>Atsijungti</Text>
-        </TouchableOpacity>
-      </View>
+    <LinearGradient
+      colors={['#4CAF50', '#81C784', '#A5D6A7', '#f5f5f5']}
+      style={styles.container}
+      locations={[0, 0.15, 0.35, 0.6]}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Mano profilis</Text>
+          <TouchableOpacity style={styles.logoutButton} onPress={onLogout}>
+            <Text style={styles.logoutButtonText}>Atsijungti</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.userInfo}>
-        <Text style={styles.userName}>{user.name}</Text>
-        <Text style={styles.userEmail}>{user.email}</Text>
-        <Text style={styles.userPhone}>{user.phone}</Text>
-      </View>
+        <View style={styles.userInfo}>
+          <Text style={styles.userName}>{user.name}</Text>
+          <Text style={styles.userEmail}>{user.email}</Text>
+          <Text style={styles.userPhone}>{user.phone}</Text>
+        </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Mano skelbimai ({userEquipment.length})</Text>
-        <FlatList
-          data={userEquipment}
-          renderItem={renderEquipmentItem}
-          keyExtractor={item => item.id.toString()}
-          ListEmptyComponent={
-            <Text style={styles.emptyText}>Dar neturite skelbimų</Text>
-          }
-        />
-      </View>
-    </SafeAreaView>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Mano skelbimai ({userEquipment.length})</Text>
+          <FlatList
+            data={userEquipment}
+            renderItem={renderEquipmentItem}
+            keyExtractor={item => item.id.toString()}
+            ListEmptyComponent={
+              <Text style={styles.emptyText}>Dar neturite skelbimų</Text>
+            }
+          />
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+  },
+  safeArea: {
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: 'white',
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   logoutButton: {
     backgroundColor: '#ff4444',
@@ -128,7 +140,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   userInfo: {
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     padding: 20,
     marginBottom: 10,
   },
@@ -140,12 +152,12 @@ const styles = StyleSheet.create({
   },
   userEmail: {
     fontSize: 16,
-    color: '#666',
+    color: '#555',
     marginBottom: 3,
   },
   userPhone: {
     fontSize: 16,
-    color: '#666',
+    color: '#555',
   },
   section: {
     flex: 1,

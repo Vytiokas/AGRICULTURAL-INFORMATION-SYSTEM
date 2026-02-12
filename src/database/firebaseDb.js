@@ -51,11 +51,16 @@ const initDatabase = async () => {
       CREATE TABLE IF NOT EXISTS services (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         serviceName TEXT NOT NULL,
+        toolType TEXT,
         description TEXT,
-        pricePerHectare REAL,
+        price REAL,
+        priceUnit TEXT DEFAULT 'ha',
         providerName TEXT,
         providerPhone TEXT,
-        createdAt INTEGER
+        imageUrl TEXT,
+        userId INTEGER,
+        createdAt INTEGER,
+        FOREIGN KEY (userId) REFERENCES users (id)
       );
 
       CREATE TABLE IF NOT EXISTS news (
@@ -133,6 +138,60 @@ const initDatabase = async () => {
     } catch (e) {
       // Column already exists, ignore error
     }
+
+    // Migration: Add toolType column to services if it doesn't exist
+    try {
+      await db.execAsync(`
+        ALTER TABLE services ADD COLUMN toolType TEXT;
+      `);
+    } catch (e) {
+      // Column already exists, ignore error
+    }
+
+    // Migration: Add imageUrl column to services if it doesn't exist
+    try {
+      await db.execAsync(`
+        ALTER TABLE services ADD COLUMN imageUrl TEXT;
+      `);
+    } catch (e) {
+      // Column already exists, ignore error
+    }
+
+    // Migration: Add userId column to services if it doesn't exist
+    try {
+      await db.execAsync(`
+        ALTER TABLE services ADD COLUMN userId INTEGER;
+      `);
+    } catch (e) {
+      // Column already exists, ignore error
+    }
+
+    // Migration: Add price column to services if it doesn't exist
+    try {
+      await db.execAsync(`
+        ALTER TABLE services ADD COLUMN price REAL;
+      `);
+    } catch (e) {
+      // Column already exists, ignore error
+    }
+
+    // Migration: Add priceUnit column to services if it doesn't exist
+    try {
+      await db.execAsync(`
+        ALTER TABLE services ADD COLUMN priceUnit TEXT DEFAULT 'ha';
+      `);
+    } catch (e) {
+      // Column already exists, ignore error
+    }
+
+    // Migration: Copy pricePerHectare to price if exists
+    try {
+      await db.execAsync(`
+        UPDATE services SET price = pricePerHectare WHERE price IS NULL AND pricePerHectare IS NOT NULL;
+      `);
+    } catch (e) {
+      // Ignore error
+    }
   }
 };
 
@@ -205,8 +264,8 @@ export const addService = async (service) => {
   try {
     await initDatabase();
     await db.runAsync(
-      'INSERT INTO services (serviceName, description, pricePerHectare, providerName, providerPhone, createdAt) VALUES (?, ?, ?, ?, ?, ?)',
-      [service.serviceName, service.description, service.pricePerHectare, service.providerName, service.providerPhone, Date.now()]
+      'INSERT INTO services (serviceName, toolType, description, price, priceUnit, providerName, providerPhone, imageUrl, userId, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [service.serviceName, service.toolType, service.description, service.price, service.priceUnit, service.providerName, service.providerPhone, service.imageUrl, service.userId, Date.now()]
     );
   } catch (error) {
     console.error('Add service error:', error);

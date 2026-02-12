@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image, SafeAreaView } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { getEquipment } from '../database/firebaseDb';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -35,34 +36,42 @@ export default function MarketplaceScreen({ navigation }) {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={equipment}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-        ListEmptyComponent={
-          <View style={styles.emptyContainer}>
-            <Text style={styles.empty}>Kol kas nėra skelbimų</Text>
-          </View>
-        }
-        contentContainerStyle={equipment.length === 0 ? { flex: 1 } : { paddingBottom: 80 }}
-        contentInsetAdjustmentBehavior="automatic"
-      />
+    <LinearGradient
+      colors={['#4CAF50', '#81C784', '#f5f5f5']}
+      style={styles.container}
+      locations={[0, 0.15, 0.4]}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        <FlatList
+          data={equipment}
+          renderItem={renderItem}
+          keyExtractor={item => item.id.toString()}
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <Text style={styles.empty}>Kol kas nėra skelbimų</Text>
+            </View>
+          }
+          contentContainerStyle={equipment.length === 0 ? { flex: 1 } : { paddingBottom: 80 }}
+          contentInsetAdjustmentBehavior="automatic"
+        />
 
-      <TouchableOpacity
-        style={styles.floatingButton}
-        onPress={() => navigation.navigate('AddEquipment')}
-      >
-        <Text style={styles.floatingButtonText}>+</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+        <TouchableOpacity
+          style={styles.floatingButton}
+          onPress={() => navigation.navigate('AddEquipment')}
+        >
+          <Text style={styles.floatingButtonText}>+</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+  },
+  safeArea: {
+    flex: 1,
   },
   floatingButton: {
     position: 'absolute',

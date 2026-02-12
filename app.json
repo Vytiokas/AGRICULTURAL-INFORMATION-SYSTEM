@@ -17,7 +17,17 @@
       "bundleIdentifier": "com.agrolink.app"
     },
     "android": {
-      "package": "com.agrolink.app"
+      "package": "com.agrolink.app",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBp1oqbMnjJ7FB4CbIaf_3EQM1W3IHSZwM"
+        }
+      }
+    },
+    "web": {
+      "config": {
+        "googleMapsApiKey": "AIzaSyBp1oqbMnjJ7FB4CbIaf_3EQM1W3IHSZwM"
+      }
     }
   }
 }
